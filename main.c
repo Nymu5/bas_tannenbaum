@@ -9,68 +9,68 @@ int dec_amount = 5;
 int main() {
     srand(time(0));
 
-    int height = tree_height(3, 17)+4;
+    int height = tree_height(3, 17)+5;
     int width = 2*height+1;
     char tree_array[height*width];
     for (int i = 0; i < width*height; i++) {
         tree_array[i] = ' ';
     }
-    star(tree_array, width);
-    tree(tree_array, height, width);
-    draw_fill(tree_array, height, width);
-    stand(tree_array, height, width);
-
-
-
-    print_array(tree_array, width, height);
-
+    draw_tree(tree_array, height, width);
+    print_array(tree_array, height, width);
 
     return 0;
 }
 
-void print_array(char array[], int width, int height) {
+void draw_tree(char tree_array[], int height, int width) {
+    star(tree_array, width);
+    tree(tree_array, height, width);
+    draw_fill(tree_array, height, width);
+    stand(tree_array, height, width);
+}
+
+void print_array(char array[], int height, int width) {
     for (int i = 0; i < width*height; i++) {
         if (i % width == 0 && i != 0) {
             printf("\n");
         }
         if (i / width < 3) {
-            printf("\x1b[33m%c\x1b[0m", array[i]);
+            printf("\x1b[33m");
         } else if (i / width >= height-1) {
-            printf("\x1b[30m%c\x1b[0m", array[i]);
+            printf("\x1b[30m");
         } else {
             switch (array[i]) {
+                case 'A':
+                    printf("\x1b[32m");
+                    break;
                 case '/':
-                    printf("\x1b[32m%c\x1b[0m", array[i]);
+                    printf("\x1b[32m");
                     break;
                 case '\\':
-                    printf("\x1b[32m%c\x1b[0m", array[i]);
+                    printf("\x1b[32m");
                     break;
                 case '#':
-                    printf("\x1b[32m%c\x1b[0m", array[i]);
+                    printf("\x1b[32m");
                     break;
                 case '@':
-                    printf("\x1b[31m%c\x1b[0m", array[i]);
+                    printf("\x1b[31m");
                     break;
                 case '*':
-                    printf("\x1b[33m%c\x1b[0m", array[i]);
+                    printf("\x1b[33m");
                     break;
                 case '~':
-                    printf("\x1b[34m%c\x1b[0m", array[i]);
-                    break;
-                default:
-                    printf("%c", array[i]);
+                    printf("\x1b[34m");
                     break;
             }
         }
+        printf("%c\x1b[0m", array[i]);
     }
 }
 
 void star(char array[], int width) {
-    int x_pos = (width-1)/2;
-    char star_symbols[] = {'\\',' ','/','-','X','-','/','|','\\'};
-    for (int i = 0; i < 3; i++) {
+    char star_symbols[] = {'\\',' ','/','-','X','-','/','|','\\', ' ', 'A', ' '};
+    for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 3; j++) {
-            array[i*width+j+x_pos] = star_symbols[i*3+j];
+            array[i*width+j+(width-1)/2] = star_symbols[i*3+j];
         }
     }
 }
@@ -82,24 +82,24 @@ void stand(char array[], int height, int width) {
 }
 
 void tree(char array[], int height, width) {
-    for (int i = 3; i < height-1; i++) {
-        array[i*width+height-(i-3)] = '/';
-        array[i*width+height+(i-1)] = '\\';
+    for (int i = 4; i < height-1; i++) {
+        array[i*width+height-(i-4)] = '/';
+        array[i*width+height+(i-2)] = '\\';
     }
 }
 
 void draw_fill(char array[], int height, int width) {
-    for (int i = 3; i < height-1; i++) {
-        for (int j = 0; j < (i-3)*2+1 ; j++) {
+    for (int i = 4; i < height-1; i++) {
+        for (int j = 0; j < (i-4)*2+1 ; j++) {
             char decoration;
             do {
                 decoration = random_decoration();
-                array[i*width+height-(i-3)+1+j] = decoration;
+                array[i*width+height-(i-4)+1+j] = decoration;
             } while (
-                    array[i*width+height-(i-3)+1+j+1] == decoration ||
-                    array[i*width+height-(i-3)+1+j-1] == decoration ||
-                    array[i*width+height-(i-3)+1+j-width] == decoration ||
-                    array[i*width+height-(i-3)+1+j+width] == decoration
+                    array[i*width+height-(i-4)+1+j+1] == decoration ||
+                    array[i*width+height-(i-4)+1+j-1] == decoration ||
+                    array[i*width+height-(i-4)+1+j-width] == decoration ||
+                    array[i*width+height-(i-4)+1+j+width] == decoration
                     );
         }
     }
