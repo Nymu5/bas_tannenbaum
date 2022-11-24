@@ -6,18 +6,18 @@
 char decorations[] = {'@', '*', '#', 'x', '~'};
 int dec_amount = 5;
 
-int main() {
+int main(void) {
+    int height, width, i;
+    char tree_array[990];
     srand(time(0));
 
-    int height = tree_height(3, 17)+5;
-    int width = 2*height+1;
-    char tree_array[height*width];
-    for (int i = 0; i < width*height; i++) {
+    height = tree_height(3, 17)+5;
+    width = 2*height+1;
+    for (i = 0; i < width*height; i++) {
         tree_array[i] = ' ';
     }
     draw_tree(tree_array, height, width);
     print_array(tree_array, height, width);
-
     return 0;
 }
 
@@ -29,7 +29,8 @@ void draw_tree(char tree_array[], int height, int width) {
 }
 
 void print_array(char array[], int height, int width) {
-    for (int i = 0; i < width*height; i++) {
+    int i;
+    for (i = 0; i < width*height; i++) {
         if (i % width == 0 && i != 0) {
             printf("\n");
         }
@@ -67,30 +68,34 @@ void print_array(char array[], int height, int width) {
 }
 
 void star(char array[], int width) {
+    int i, j;
     char star_symbols[] = {'\\',' ','/','-','X','-','/','|','\\', ' ', 'A', ' '};
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 3; j++) {
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
             array[i*width+j+(width-1)/2] = star_symbols[i*3+j];
         }
     }
 }
 
 void stand(char array[], int height, int width) {
-    for (int i = 0; i < 3; i++) {
+    int i;
+    for (i = 0; i < 3; i++) {
         array[((height-1)*width)+((width-1)/2)+i] = '|';
     }
 }
 
-void tree(char array[], int height, width) {
-    for (int i = 4; i < height-1; i++) {
+void tree(char array[], int height, int width) {
+    int i;
+    for (i = 4; i < height-1; i++) {
         array[i*width+height-(i-4)] = '/';
         array[i*width+height+(i-2)] = '\\';
     }
 }
 
 void draw_fill(char array[], int height, int width) {
-    for (int i = 4; i < height-1; i++) {
-        for (int j = 0; j < (i-4)*2+1 ; j++) {
+    int i, j;
+    for (i = 4; i < height-1; i++) {
+        for (j = 0; j < (i-4)*2+1 ; j++) {
             char decoration;
             do {
                 decoration = random_decoration();
